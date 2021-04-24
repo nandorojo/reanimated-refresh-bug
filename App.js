@@ -1,47 +1,68 @@
+import * as React from "react";
+import { Text, View, StyleSheet, Pressable } from "react-native";
 import Animated, {
   useSharedValue,
-  withTiming,
+  useDerivedValue,
   useAnimatedStyle,
-  Easing,
+  withTiming,
 } from "react-native-reanimated";
-import { View, Button } from "react-native";
-import React from "react";
 
-export default function AnimatedStyleUpdateExample(props) {
-  const randomWidth = useSharedValue(10);
+/**
+ * reanimated 2 scope issue
+ *
+ * Try passing pressedState to <Shape />
+ *
+ * Once you add that in, the derived value no longer updates.
+ *
+ * Updating the scoped variables around it seems to break the mutation of a shared value
+ */
 
-  const config = {
-    duration: 500,
-    easing: Easing.bezier(0.5, 0.01, 0, 1),
+function Shape({ extraState, pressed }) {
+  const opacity = useDerivedValue(() => (pressed.value ? 0.5 : 1));
+
+  const style = useAnimatedStyle(() => ({
+    opacity: withTiming(opacity.value),
+  }));
+
+  return <Animated.View style={[styles.shape, style]} />;
+}
+
+export default function App() {
+  const pressed = useSharedValue(false);
+  const [pressedState, setPressed] = React.useState(false);
+
+  const onPressIn = () => {
+    pressed.value = true;
+    setPressed(true);
+  };
+  const onPressOut = () => {
+    pressed.value = false;
+    setPressed(false);
   };
 
-  const style = useAnimatedStyle(() => {
-    return {
-      width: withTiming(randomWidth.value, config),
-    };
-  });
-
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
-      }}
+    <Pressable
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
+      style={styles.container}
     >
-      <Animated.View
-        style={[
-          { width: 100, height: 80, backgroundColor: "black", margin: 30 },
-          style,
-        ]}
-      />
-      <Button
-        title="toggle"
-        onPress={() => {
-          randomWidth.value = Math.random() * 350;
-        }}
-      />
-    </View>
+      <Shape pressed={pressed} extraState={pressedState} />
+    </Pressable>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "cyan",
+    padding: 8,
+  },
+  shape: {
+    height: 200,
+    width: 200,
+    backgroundColor: "black",
+    borderRadius: 16,
+  },
+});
