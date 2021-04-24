@@ -1,7 +1,8 @@
 `yarn install`
+
 `yarn ios`
 
-# Bug
+# Reanimated 2 Bug
 
 First, run the app, and press in/out on the shape. Notice that the opacity changes when it's pressed vs not. All good.
 
