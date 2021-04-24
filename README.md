@@ -1,22 +1,12 @@
-# Reanimated v2 (release candidate) example
+`yarn install`
+`yarn ios`
 
-<p>
-  <!-- iOS -->
-  <img alt="Supports Expo iOS" longdesc="Supports Expo iOS" src="https://img.shields.io/badge/iOS-4630EB.svg?style=flat-square&logo=APPLE&labelColor=999999&logoColor=fff" />
-  <!-- Android -->
-  <img alt="Supports Expo Android" longdesc="Supports Expo Android" src="https://img.shields.io/badge/Android-4630EB.svg?style=flat-square&logo=ANDROID&labelColor=A4C639&logoColor=fff" />
-  <!-- Web -->
-</p>
+# Bug
 
-Experiment with Reanimated 2 (rc) in SDK 40.
+First, run the app, and press in/out on the shape. Notice that the opacity changes when it's pressed vs not. All good.
 
-## 🚀 How to use
+Next, try adding / removing the `extraState` prop from `Shape`. Then save.
 
-> `npx create-react-native-app my-app -t with-reanimated2`
+Now try pressing in/out on the shape again. It doesn't work.
 
-- Run `yarn` or `npm install`
-- Run [`expo start`](https://docs.expo.io/versions/latest/workflow/expo-cli/), try it out.
-
-## 📝 Notes
-
-- [react-native-reanimated v2 docs](https://docs.swmansion.com/react-native-reanimated/)
+Here's a video explanation: https://www.loom.com/share/91bc5f2a6d074d209149e2531d9ff8f3
